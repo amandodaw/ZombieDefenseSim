@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://cw3rhpdwy6t13"]
+
+[ext_resource type="Script" uid="uid://bgcr5jv7paplv" path="res://scripts/world.gd" id="1_rwgxs"]
+[ext_resource type="PackedScene" uid="uid://drrb3e32wgt5q" path="res://scenes/map_layer.tscn" id="2_4wyf3"]
+[ext_resource type="PackedScene" uid="uid://bcnsmjqh840j1" path="res://scenes/player_camera.tscn" id="3_4wyf3"]
+[ext_resource type="PackedScene" uid="uid://cxiujljtbb3cd" path="res://scenes/building_layer.tscn" id="3_k0juu"]
+[ext_resource type="PackedScene" uid="uid://27pr173jhkq4" path="res://scenes/ui.tscn" id="5_71j4m"]
+
+[node name="World" type="Node2D" unique_id=610277894]
+script = ExtResource("1_rwgxs")
+
+[node name="UI" parent="." unique_id=1983132554 instance=ExtResource("5_71j4m")]
+
+[node name="MapLayer" parent="." unique_id=332194154 instance=ExtResource("2_4wyf3")]
+
+[node name="BuildingLayer" parent="." unique_id=1438049240 instance=ExtResource("3_k0juu")]
+
+[node name="PlayerCamera" parent="." unique_id=1416648919 instance=ExtResource("3_4wyf3")]
