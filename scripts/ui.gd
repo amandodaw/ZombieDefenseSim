@@ -1,51 +1,37 @@
 extends Control
 
-@onready var container = $Panel/VBoxContainer
+@onready var contenedor = $BuildMenu
+@onready var world : World
+var opcion_seleccionada
 
-enum WorkplaceType {
-	FARM,
-	KITCHEN,
-	HOUSE
-}
+var opciones = []
 
-var building_data = {
-	WorkplaceType.FARM: {
-		"name": "Granja"
-	},
-	WorkplaceType.KITCHEN: {
-		"name": "Cocina"
-	},
-	WorkplaceType.HOUSE: {
-		"name": "Casa"
-	}
-}
+func _ready() -> void:
+	actualizar_menu()
 
-var available_buildings = [
-	WorkplaceType.FARM,
-	WorkplaceType.KITCHEN,
-	WorkplaceType.HOUSE
-]
+func actualizar_menu():
+	if(world==null):
+		return
+	var input : InputComponent = world.get_component(world.player_id, InputComponent)
 
-var selected_building : WorkplaceType
+	# Borrar botones anteriores
+	for hijo in contenedor.get_children():
+		hijo.queue_free()
+	
+	# Crear nuevos botones
+	for opcion in input.Buildings.values():
+		var boton = Button.new()
+		boton.text = input.BUILDING_NAMES[opcion]
+		boton.pressed.connect(_on_boton_presionado.bind(opcion))
+		contenedor.add_child(boton)
 
-func _ready():
-	build_menu()
 
-func _gui_input(event):
-	if event is InputEventMouseButton and event.pressed:
-		accept_event()
+func _on_boton_presionado(opcion):
+	print(opcion)
+	var input : InputComponent = world.get_component(world.player_id, InputComponent)
 
-func build_menu():
-	for type in available_buildings:
-
-		var button = Button.new()
-		button.text = building_data[type].name
-
-		# guardar qué edificio representa
-		button.pressed.connect(_on_building_selected.bind(type))
-
-		container.add_child(button)
-
-func _on_building_selected(type: WorkplaceType):
-	selected_building = type
-	print("Seleccionado:", building_data[type].name)
+	var order = world.create_entity()
+	world.add(order, BuildOrderComponent.new())
+	world.add(order, PositionComponent.new())
+	input.build_mode = true
+	input.selected_building = opcion

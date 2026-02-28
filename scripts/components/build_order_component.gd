@@ -6,3 +6,5 @@ enum Buildings {
 }
 
 var type : Buildings
+
+var valid_pos : bool = false

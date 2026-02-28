@@ -2,9 +2,13 @@ extends Node2D
 class_name World
 
 @onready var camera = $PlayerCamera
-@onready var map = $MapLayer
-@onready var building_map = $BuildingLayer
+@onready var map = $MapLayers
+@onready var map_layer = $MapLayers/MapLayer
+@onready var building_map = $MapLayers/BuildingLayer
+@onready var preview_map = $MapLayers/PreviewLayer
+@onready var ui = $UI/Control
 
+var player_id : int = 0
 # =========================================================
 # ENTIDADES
 # =========================================================
@@ -83,15 +87,27 @@ func register_system(system) -> void:
 	systems.append(system)
 
 var input_system : InputSystem
+var building_system : BuildingSystem
 var ui_system : UISystem
 
 func _ready() -> void:
 	input_system = InputSystem.new()
+	building_system = BuildingSystem.new()
 	ui_system = UISystem.new()
 	
+	ui.world = self
+	
 	register_system(input_system)
-	register_system(ui_system)
+	register_system(building_system)
+	#register_system(ui_system)
+	
+	create_player()
+	ui.actualizar_menu()
 
 func _physics_process(delta: float) -> void:
 	for system in systems:
 		system.update(self, delta)
+
+func create_player() -> void :
+	player_id = create_entity()
+	add(player_id, InputComponent.new())
