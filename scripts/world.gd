@@ -27,12 +27,27 @@ func create_entity() -> int:
 # =========================
 var components := {}
 
+# Índice invertido: entity -> {type: true, ...}
+var _entity_components := {}
+
+# Cache de queries
+var _query_cache := {}
+
+func _invalidate_cache():
+	_query_cache.clear()
+
 func add(entity: int, component) -> void:
 	var type = component.get_script()
 	
 	if not components.has(type):
 		components[type] = {}
 	components[type][entity] = component
+	
+	if not _entity_components.has(entity):
+		_entity_components[entity] = {}
+	_entity_components[entity][type] = true
+	
+	_invalidate_cache()
 
 func get_component(entity: int, type):
 	if components.has(type) and components[type].has(entity):
@@ -45,10 +60,18 @@ func has_component(entity: int, type) -> bool:
 func remove_component(entity: int, type) -> void:
 	if components.has(type):
 		components[type].erase(entity)
+	
+	if _entity_components.has(entity):
+		_entity_components[entity].erase(type)
+	
+	_invalidate_cache()
 
 func destroy_entity(entity: int) -> void:
 	for type in components.keys():
 		components[type].erase(entity)
+	
+	_entity_components.erase(entity)
+	_invalidate_cache()
 
 # =========================================================
 # QUERY
@@ -60,25 +83,36 @@ func query(required_types: Array) -> Array:
 	if required_types.is_empty():
 		return []
 	
-	var first_type = required_types[0]
-	if not components.has(first_type):
+	var cache_key = required_types.hash()
+	if _query_cache.has(cache_key):
+		return _query_cache[cache_key]
+	
+	var result = _query_optimizado(required_types)
+	_query_cache[cache_key] = result
+	return result
+
+func _query_optimizado(required_types: Array) -> Array:
+	var base_type = _get_smallest_component_type(required_types)
+	if not components.has(base_type):
 		return []
 	
 	var result := []
-	
-	for entity in components[first_type].keys():
-		
-		var valid = true
-		
-		for t in required_types:
-			if not has_component(entity, t):
-				valid = false
-				break
-		
-		if valid:
+	for entity in components[base_type].keys():
+		if _entity_components.has(entity) and _entity_components[entity].has_all(required_types):
 			result.append(entity)
-	
 	return result
+
+func _get_smallest_component_type(types: Array) -> Resource:
+	var smallest_type = types[0]
+	var smallest_count = INF
+	for t in types:
+		if not components.has(t):
+			continue
+		var count = components[t].size()
+		if count < smallest_count:
+			smallest_count = count
+			smallest_type = t
+	return smallest_type
 	
 # =========================
 # SISTEMAS
