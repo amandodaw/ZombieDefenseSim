@@ -2,7 +2,6 @@ class_name GoapSystem
 
 
 func update(world: World, delta):
-
 	for entity in world.query([
 		GoalComponent,
 		WorldStateComponent,
@@ -10,15 +9,36 @@ func update(world: World, delta):
 		ActionComponent
 	]):
 		
+		var goal_component : GoalComponent = world.get_component(entity, GoalComponent)
 		var world_state_component : WorldStateComponent = world.get_component(entity, WorldStateComponent)
-		var goals : Dictionary = world.get_component(entity, GoalComponent).goals
+		var goals : Dictionary = goal_component.goals
 		var plan : Array[GoapAction] = world.get_component(entity, PlanComponent).plan
 		var actions : Array[GoapAction] = world.get_component(entity, ActionComponent).actions
 		
 		if not plan.is_empty():
 			continue
 		
-		# elegir el primer goal activo que pueda planificarse
+		# Solo evaluar goals si no hay ningún goal activo
+		var has_active_goal := false
+		for key in goals.keys():
+			if goals[key]:
+				has_active_goal = true
+				break
+		
+		if not has_active_goal:
+			goal_component.evaluate(entity, world)
+		
+		# Solo resetear world_state si no hay goal activo (primera planificación)
+		# Si hay goal activo (ej: move_to_target), preservar el estado
+		if not has_active_goal:
+			world_state_component.state = {
+				"has_target": false,
+				"in_target_position": false,
+				"at_target": false,
+				"wander": false
+			}
+		
+		# planificar para el primer goal activo
 		for goal_key in goals.keys():
 			if not goals[goal_key]:
 				continue
@@ -33,8 +53,6 @@ func update(world: World, delta):
 			if new_plan.size() > 0:
 				plan.append_array(new_plan)
 				break
-		if plan.size()==0:
-			goals.set("wander", true)
 		
 # =========================================================
 # ===================== PLANNER GOAP ======================

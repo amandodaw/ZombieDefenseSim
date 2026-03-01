@@ -26,18 +26,15 @@ func update(world: World, delta):
 		if action.is_finished:
 			
 			var world_state : WorldStateComponent = world.get_component(entity, WorldStateComponent)
-			var goal_component : GoalComponent = world.get_component(entity, GoalComponent)
 			var move : MovementComponent = world.get_component(entity, MovementComponent)
 			
-			# aplicar efectos al mundo real
-			for key in action.effects:
-				world_state.state[key] = action.effects[key]
-			
-			# marcar goals completados
-			if goal_component:
-				for key in action.effects:
-					if goal_component.goals.has(key):
-						goal_component.goals[key] = false
+			# resetear world_state a valores por defecto
+			world_state.state = {
+				"has_target": false,
+				"in_target_position": false,
+				"at_target": false,
+				"wander": false
+			}
 			
 			# detener movimiento
 			if move:

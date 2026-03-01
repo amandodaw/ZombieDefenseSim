@@ -1,3 +1,3 @@
 class_name PlanComponent
 
-var plan : Array[GoapAction]
+var plan : Array[GoapAction] = []

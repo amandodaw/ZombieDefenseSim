@@ -19,9 +19,8 @@ func start(entity, world):
 	super.start(entity, world)
 	
 	var pos = world.get_component(entity, PositionComponent)
-	var world_state = world.get_component(entity, WorldStateComponent)
 	var move = world.get_component(entity, MovementComponent)
-	var goals = world.get_component(entity, GoalComponent).goals
+	var goal_component = world.get_component(entity, GoalComponent)
 	
 	var random_offset = Vector2i(
 		randf_range(-100, 100),
@@ -32,7 +31,9 @@ func start(entity, world):
 	
 	move.target = new_target
 	
-	goals.set("wander", false)
-	goals.set("move_to_target", true)
+	# Establecer goal para que planner busque GoToAction
+	# IMPORTANTE: limpiar wander para que no se planifique de nuevo
+	goal_component.goals["wander"] = false
+	goal_component.goals["move_to_target"] = true
 	
 	finish()
