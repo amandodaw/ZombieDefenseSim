@@ -8,6 +8,8 @@ class_name World
 @onready var preview_map = $MapLayers/PreviewLayer
 @onready var ui = $UI/Control
 
+var human_scene : PackedScene = preload("res://scenes/human.tscn")
+
 var player_id : int = 0
 # =========================================================
 # ENTIDADES
@@ -89,16 +91,19 @@ func register_system(system) -> void:
 var input_system : InputSystem
 var building_system : BuildingSystem
 var ui_system : UISystem
+var physics_system : PhysicsSystem
 
 func _ready() -> void:
 	input_system = InputSystem.new()
 	building_system = BuildingSystem.new()
 	ui_system = UISystem.new()
+	physics_system = PhysicsSystem.new()
 	
 	ui.world = self
 	
 	register_system(input_system)
 	register_system(building_system)
+	register_system(physics_system)
 	#register_system(ui_system)
 	
 	create_player()
@@ -111,3 +116,14 @@ func _physics_process(delta: float) -> void:
 func create_player() -> void :
 	player_id = create_entity()
 	add(player_id, InputComponent.new())
+
+func create_human(pos : Vector2i) -> void:
+	var human_id = create_entity()
+	add(human_id, PositionComponent.new())
+	add(human_id, MovementComponent.new())
+	var sprite = SpriteComponent.new()
+	add(human_id, sprite)
+	var human = human_scene.instantiate()
+	sprite = human
+	sprite.global_position = pos
+	add_child(human)

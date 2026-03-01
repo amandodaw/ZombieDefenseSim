@@ -9,10 +9,15 @@ func update(world: World, delta):
 		if player_input.build_mode:
 			print(map.local_to_map(world.get_global_mouse_position()))
 			player_input.confirm_order = true
+		if player_input.spawn_human:
+			world.create_human(world.get_global_mouse_position())
+			player_input.spawn_human = false
 	if Input.is_action_just_pressed("right_click"):
 		if player_input.build_mode and !player_input.abort_order:
 			player_input.build_mode = false
 			player_input.abort_order = true
+		if player_input.spawn_human:
+			player_input.spawn_human = false
 	if Input.is_action_just_pressed("build_menu"):
 		ui.visible = !ui.visible
 	
