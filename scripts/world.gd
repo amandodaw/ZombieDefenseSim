@@ -92,17 +92,23 @@ var input_system : InputSystem
 var building_system : BuildingSystem
 var ui_system : UISystem
 var physics_system : PhysicsSystem
+var goap_system : GoapSystem
+var goap_execution_system : GoapExecutionSystem
 
 func _ready() -> void:
 	input_system = InputSystem.new()
 	building_system = BuildingSystem.new()
 	ui_system = UISystem.new()
 	physics_system = PhysicsSystem.new()
+	goap_system = GoapSystem.new()
+	goap_execution_system = GoapExecutionSystem.new()
 	
 	ui.world = self
 	
 	register_system(input_system)
 	register_system(building_system)
+	register_system(goap_system)
+	register_system(goap_execution_system)
 	register_system(physics_system)
 	#register_system(ui_system)
 	
@@ -120,7 +126,18 @@ func create_player() -> void :
 func create_human(pos : Vector2i) -> void:
 	var human_id = create_entity()
 	add(human_id, PositionComponent.new())
-	add(human_id, MovementComponent.new())
+	var move = MovementComponent.new()
+	var goal = GoalComponent.new()
+	goal.goals.set("move_to_target", true)
+	add(human_id, goal)
+	add(human_id, ActionComponent.new())
+	add(human_id, PlanComponent.new())
+	var world_state = WorldStateComponent.new()
+	world_state.state.set("has_target", true)
+	move.target = pos + Vector2i(20, 0)
+	add(human_id, move)
+	add(human_id, world_state)
+
 	var sprite = SpriteComponent.new()
 	add(human_id, sprite)
 	var human = human_scene.instantiate()

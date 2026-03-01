@@ -1,3 +1,6 @@
 class_name WorldStateComponent
 
-var has_objective : bool = false
+var state : Dictionary = {
+	"has_target" : false,
+	"in_target_position" : false
+}

@@ -1,3 +1,5 @@
 class_name GoalComponent
 
-var has_objective : bool = false
+var goals : Dictionary = {
+	"move_to_target": false,
+}
