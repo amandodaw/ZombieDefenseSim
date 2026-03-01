@@ -28,10 +28,6 @@ func update(entity, world, delta):
 	if direction.length() < move.speed * delta + 5:
 		move.direction = Vector2.ZERO
 		
-		var world_state = world.get_component(entity, WorldStateComponent)
-		world_state.state["has_target"] = false
-		world_state.state["at_target"] = false
-		
 		finish()
 		return
 	
