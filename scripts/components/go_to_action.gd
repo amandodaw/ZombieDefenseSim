@@ -22,10 +22,12 @@ func update(entity, world, delta):
 	var move : MovementComponent = world.get_component(entity, MovementComponent)
 	target_position = move.target
 	
-	var direction = (target_position - pos.value)
+	var direction : Vector2 = (target_position - pos.value)
 	
-	if direction.length() < 2:
+	if direction.length() < move.speed * delta + 5:
+		move.direction = Vector2.ZERO
 		finish()
 		return
 	
-	move.direction = target_position - pos.value
+	move.direction = direction.normalized()
+	pos.value += Vector2i(move.direction * move.speed * delta)

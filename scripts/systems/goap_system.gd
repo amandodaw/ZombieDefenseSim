@@ -15,7 +15,8 @@ func update(world: World, delta):
 		var plan : Array[GoapAction] = world.get_component(entity, PlanComponent).plan
 		var actions : Array[GoapAction] = world.get_component(entity, ActionComponent).actions
 		
-		plan.clear()
+		if not plan.is_empty():
+			continue
 		
 		# elegir el primer goal activo que pueda planificarse
 		for goal_key in goals.keys():
@@ -32,7 +33,6 @@ func update(world: World, delta):
 			if new_plan.size() > 0:
 				plan.append_array(new_plan)
 				break
-			print("PLAN SIZE", plan.size())
 
 
 # =========================================================

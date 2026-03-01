@@ -5,7 +5,9 @@ func update(world: World, delta):
 
 	for entity in world.query([
 		PlanComponent,
-		WorldStateComponent
+		WorldStateComponent,
+		GoalComponent,
+		MovementComponent
 	]):
 		var plan : Array[GoapAction] = world.get_component(entity, PlanComponent).plan
 		if plan.is_empty():
@@ -24,10 +26,22 @@ func update(world: World, delta):
 		if action.is_finished:
 			
 			var world_state : WorldStateComponent = world.get_component(entity, WorldStateComponent)
+			var goal_component : GoalComponent = world.get_component(entity, GoalComponent)
+			var move : MovementComponent = world.get_component(entity, MovementComponent)
 			
 			# aplicar efectos al mundo real
 			for key in action.effects:
 				world_state.state[key] = action.effects[key]
+			
+			# marcar goals completados
+			if goal_component:
+				for key in action.effects:
+					if goal_component.goals.has(key):
+						goal_component.goals[key] = false
+			
+			# detener movimiento
+			if move:
+				move.direction = Vector2.ZERO
 			
 			# quitar acción del plan
 			plan.pop_front()

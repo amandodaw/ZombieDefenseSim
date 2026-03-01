@@ -125,7 +125,9 @@ func create_player() -> void :
 
 func create_human(pos : Vector2i) -> void:
 	var human_id = create_entity()
-	add(human_id, PositionComponent.new())
+	var position = PositionComponent.new()
+	position.value = pos
+	add(human_id, position)
 	var move = MovementComponent.new()
 	var goal = GoalComponent.new()
 	goal.goals.set("move_to_target", true)
@@ -134,13 +136,13 @@ func create_human(pos : Vector2i) -> void:
 	add(human_id, PlanComponent.new())
 	var world_state = WorldStateComponent.new()
 	world_state.state.set("has_target", true)
-	move.target = pos + Vector2i(20, 0)
+	move.target = pos + Vector2i(50, 0)
 	add(human_id, move)
 	add(human_id, world_state)
 
-	var sprite = SpriteComponent.new()
-	add(human_id, sprite)
+	var sprite_component = SpriteComponent.new()
+	add(human_id, sprite_component)
 	var human = human_scene.instantiate()
-	sprite = human
-	sprite.global_position = pos
+	human.global_position = pos
 	add_child(human)
+	sprite_component.sprite = human
