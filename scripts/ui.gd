@@ -31,7 +31,9 @@ func _on_boton_presionado(opcion):
 	var input : InputComponent = world.get_component(world.player_id, InputComponent)
 
 	var order = world.create_entity()
-	world.add(order, BuildOrderComponent.new())
+	var build_order_comp = BuildOrderComponent.new()
+	build_order_comp.type = opcion
+	world.add(order, build_order_comp)
 	world.add(order, PositionComponent.new())
 	input.build_mode = true
 	input.selected_building = opcion

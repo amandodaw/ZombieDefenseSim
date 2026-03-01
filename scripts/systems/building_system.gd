@@ -18,11 +18,18 @@ func preview_building(world : World, id : int, input : InputComponent) -> void:
 	var preview_map : TileMapLayer = world.preview_map
 	var building_map : TileMapLayer = world.building_map
 	var pos = world.get_component(id, PositionComponent)
-	var build_order = world.get_component(id, BuildOrderComponent)
+	var build_order : BuildOrderComponent = world.get_component(id, BuildOrderComponent)
 	preview_map.clear()
 	pos.value = world.get_global_mouse_position()
-	
+
 	var workplace_comp = WorkplaceComponent.new()
+	match build_order.type:
+		0:
+			var farm_comp = FarmComponent.new()
+			world.add(id, farm_comp)
+			workplace_comp.form = farm_comp.form
+			workplace_comp.origin_tile = farm_comp.origin_tile
+		
 	world.add(id, workplace_comp)
 
 	

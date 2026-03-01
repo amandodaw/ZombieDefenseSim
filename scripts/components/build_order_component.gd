@@ -2,7 +2,8 @@ class_name BuildOrderComponent
 
 enum Buildings {
 	FARM,
-	KITCHEN
+	KITCHEN,
+	HOUSE
 }
 
 var type : Buildings
