@@ -130,13 +130,10 @@ func create_human(pos : Vector2i) -> void:
 	add(human_id, position)
 	var move = MovementComponent.new()
 	var goal = GoalComponent.new()
-	goal.goals.set("move_to_target", true)
 	add(human_id, goal)
 	add(human_id, ActionComponent.new())
 	add(human_id, PlanComponent.new())
 	var world_state = WorldStateComponent.new()
-	world_state.state.set("has_target", true)
-	move.target = pos + Vector2i(50, 0)
 	add(human_id, move)
 	add(human_id, world_state)
 

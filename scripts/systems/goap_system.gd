@@ -33,8 +33,9 @@ func update(world: World, delta):
 			if new_plan.size() > 0:
 				plan.append_array(new_plan)
 				break
-
-
+		if plan.size()==0:
+			goals.set("wander", true)
+		
 # =========================================================
 # ===================== PLANNER GOAP ======================
 # =========================================================

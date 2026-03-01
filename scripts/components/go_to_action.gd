@@ -19,6 +19,7 @@ func _init():
 func update(entity, world, delta):
 
 	var pos = world.get_component(entity, PositionComponent)
+	var goals = world.get_component(entity, GoalComponent).goals
 	var move : MovementComponent = world.get_component(entity, MovementComponent)
 	target_position = move.target
 	
@@ -26,6 +27,7 @@ func update(entity, world, delta):
 	
 	if direction.length() < move.speed * delta + 5:
 		move.direction = Vector2.ZERO
+		goals.get("move_to_target", false)
 		finish()
 		return
 	
