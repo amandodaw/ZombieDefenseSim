@@ -64,13 +64,17 @@ func spawn_building(world: World, id : int, input : InputComponent) -> void:
 
 func _get_or_create_workplace_component(world: World, entity_id: int, building_type: int) -> WorkplaceComponent:
 	var workplace_comp = WorkplaceComponent.new()
+	var type_comp
 	match building_type:
 		0:
-			var farm_comp = FarmComponent.new()
-			world.add(entity_id, farm_comp)
-			workplace_comp.form = farm_comp.form
-			workplace_comp.origin_tile = farm_comp.origin_tile
-	
+			type_comp = FarmComponent.new()
+		1:
+			type_comp = KitchenComponent.new()
+		2:
+			type_comp = HouseComponent.new()
+	world.add(entity_id, type_comp)
+	workplace_comp.form = type_comp.form
+	workplace_comp.origin_tile = type_comp.origin_tile
 	world.add(entity_id, workplace_comp)
 	return workplace_comp
 
