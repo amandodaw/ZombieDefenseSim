@@ -130,6 +130,8 @@ var goal_system : GoalSystem
 var goap_system : GoapSystem
 var goap_execution_system : GoapExecutionSystem
 var city_system : CitySystem
+var spatial_index_system : SpatialIndexSystem
+var perception_system : PerceptionSystem
 
 func _ready() -> void:
 	input_system = InputSystem.new()
@@ -140,11 +142,15 @@ func _ready() -> void:
 	goap_system = GoapSystem.new()
 	goap_execution_system = GoapExecutionSystem.new()
 	city_system = CitySystem.new()
+	spatial_index_system = SpatialIndexSystem.new()
+	perception_system = PerceptionSystem.new(spatial_index_system)
 	
 	ui.world = self
 	
 	register_system(input_system)
 	register_system(building_system)
+	register_system(spatial_index_system)
+	register_system(perception_system)
 	register_system(goal_system)
 	register_system(goap_system)
 	register_system(goap_execution_system)
@@ -155,8 +161,6 @@ func _ready() -> void:
 	create_player()
 	ui.actualizar_menu()
 	add(create_entity(), CityComponent.new())
-	for i in range(1000):
-		create_human(Vector2i(100, 300))
 
 func _process(delta: float) -> void:
 	for system in systems:
@@ -180,6 +184,8 @@ func create_human(pos : Vector2i) -> void:
 	add(human_id, move)
 	add(human_id, world_state)
 	add(human_id, HumanComponent.new())
+	add(human_id, PerceptionComponent.new())
+	add(human_id, VisionComponent.new())
 
 	var sprite_component = SpriteComponent.new()
 	add(human_id, sprite_component)
