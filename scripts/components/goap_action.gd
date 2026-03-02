@@ -24,3 +24,11 @@ func finish():
 func reset():
 	is_running = false
 	is_finished = false
+
+func apply_effects_to_world(world, entity_id):
+	var world_state = world.get_component(entity_id, WorldStateComponent)
+	if not world_state:
+		return
+
+	for key in effects:
+		world_state.state[key] = effects[key]

@@ -13,7 +13,8 @@ func update(world: World, delta):
 		var world_state_component : WorldStateComponent = world.get_component(entity, WorldStateComponent)
 		var goals : Dictionary = goal_component.goals
 		var plan : Array[GoapAction] = world.get_component(entity, PlanComponent).plan
-		var actions : Array[GoapAction] = world.get_component(entity, ActionComponent).actions
+		var action_component : ActionComponent = world.get_component(entity, ActionComponent)
+		var actions : Array[GoapAction] = action_component.get_actions()
 		
 		if not plan.is_empty():
 			continue
@@ -24,20 +25,6 @@ func update(world: World, delta):
 			if goals[key]:
 				has_active_goal = true
 				break
-		
-		if not has_active_goal:
-			goal_component.evaluate(entity, world)
-		
-		# Solo resetear world_state si no hay goal activo (primera planificación)
-		# Si hay goal activo (ej: move_to_target), preservar el estado
-		if not has_active_goal:
-			world_state_component.state = {
-				"has_target": false,
-				"in_target_position": false,
-				"at_target": false,
-				"wander": false
-			}
-		
 		# planificar para el primer goal activo
 		for goal_key in goals.keys():
 			if not goals[goal_key]:
@@ -53,6 +40,7 @@ func update(world: World, delta):
 			if new_plan.size() > 0:
 				plan.append_array(new_plan)
 				break
+			
 		
 # =========================================================
 # ===================== PLANNER GOAP ======================

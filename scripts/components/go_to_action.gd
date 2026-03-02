@@ -11,8 +11,9 @@ func _init():
 		"has_target": true
 	}
 	effects = {
-		"at_target": true,
-		"move_to_target": true
+		"has_target": false,
+		"at_target": true
+
 	}
 
 

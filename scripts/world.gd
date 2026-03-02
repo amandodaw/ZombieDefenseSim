@@ -126,30 +126,39 @@ var input_system : InputSystem
 var building_system : BuildingSystem
 var ui_system : UISystem
 var physics_system : PhysicsSystem
+var goal_system : GoalSystem
 var goap_system : GoapSystem
 var goap_execution_system : GoapExecutionSystem
+var city_system : CitySystem
 
 func _ready() -> void:
 	input_system = InputSystem.new()
 	building_system = BuildingSystem.new()
 	ui_system = UISystem.new()
 	physics_system = PhysicsSystem.new()
+	goal_system = GoalSystem.new()
 	goap_system = GoapSystem.new()
 	goap_execution_system = GoapExecutionSystem.new()
+	city_system = CitySystem.new()
 	
 	ui.world = self
 	
 	register_system(input_system)
 	register_system(building_system)
+	register_system(goal_system)
 	register_system(goap_system)
 	register_system(goap_execution_system)
+	register_system(city_system)
 	register_system(physics_system)
 	#register_system(ui_system)
 	
 	create_player()
 	ui.actualizar_menu()
+	add(create_entity(), CityComponent.new())
+	for i in range(1000):
+		create_human(Vector2i(100, 300))
 
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
 	for system in systems:
 		system.update(self, delta)
 
@@ -170,6 +179,7 @@ func create_human(pos : Vector2i) -> void:
 	var world_state = WorldStateComponent.new()
 	add(human_id, move)
 	add(human_id, world_state)
+	add(human_id, HumanComponent.new())
 
 	var sprite_component = SpriteComponent.new()
 	add(human_id, sprite_component)

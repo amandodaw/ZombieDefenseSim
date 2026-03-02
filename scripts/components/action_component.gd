@@ -1,6 +1,12 @@
 class_name ActionComponent
 
-var actions : Array[GoapAction] = [
-	GoToAction.new(),
-	WanderAction.new()
+var action_types = [
+	GoToAction,
+	WanderAction
 ]
+
+func get_actions() -> Array[GoapAction]:
+	var result : Array[GoapAction] = []
+	for action_type in action_types:
+		result.append(action_type.new())
+	return result

@@ -24,18 +24,9 @@ func update(world: World, delta):
 		
 		# si termina → aplicar efectos y pasar a la siguiente
 		if action.is_finished:
-			
 			var world_state : WorldStateComponent = world.get_component(entity, WorldStateComponent)
 			var move : MovementComponent = world.get_component(entity, MovementComponent)
-			
-			# resetear world_state a valores por defecto
-			world_state.state = {
-				"has_target": false,
-				"in_target_position": false,
-				"at_target": false,
-				"wander": false
-			}
-			
+			action.apply_effects_to_world(world, entity)
 			# detener movimiento
 			if move:
 				move.direction = Vector2.ZERO

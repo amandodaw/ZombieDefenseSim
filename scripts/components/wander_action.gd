@@ -12,7 +12,7 @@ func _init():
 	}
 	effects = {
 		"has_target": true,
-		"wander": true
+		"at_target": false
 	}
 
 func start(entity, world):
@@ -30,10 +30,5 @@ func start(entity, world):
 	var new_target = pos.value + random_offset
 	
 	move.target = new_target
-	
-	# Establecer goal para que planner busque GoToAction
-	# IMPORTANTE: limpiar wander para que no se planifique de nuevo
-	goal_component.goals["wander"] = false
-	goal_component.goals["move_to_target"] = true
 	
 	finish()
