@@ -4,14 +4,30 @@ func update(world : World, delta):
 	for order_id in world.query([BuildOrderComponent]):
 		var input : InputComponent = world.get_component(world.player_id, InputComponent)
 		var build_order : BuildOrderComponent = world.get_component(order_id, BuildOrderComponent)
-		if input.abort_order:
-			world.destroy_entity(order_id)
-			world.preview_map.clear()
-			input.abort_order = false
-		if input.build_mode:
-			preview_building(world, order_id, input)
-		if input.confirm_order and build_order.valid_pos:
+		
+		match build_order.state:
+			BuildOrderComponent.State.ABORTED:
+				world.destroy_entity(order_id)
+				world.preview_map.clear()
+				build_order.state = BuildOrderComponent.State.PENDING
+				input.build_mode = false
+				input.abort_order = false
+
+			BuildOrderComponent.State.PENDING:
+				if input.build_mode:
+					build_order.state = BuildOrderComponent.State.PREVIEW
+
+			BuildOrderComponent.State.PREVIEW:
+				preview_building(world, order_id, input)
+				if input.confirm_order and build_order.valid_pos:
+					build_order.state = BuildOrderComponent.State.CONFIRMED
+				elif input.abort_order:
+					build_order.state = BuildOrderComponent.State.ABORTED
+
+		BuildOrderComponent.State.CONFIRMED:
 			spawn_building(world, order_id, input)
+			input.confirm_order = false
+			build_order.state = BuildOrderComponent.State.PENDING
 
 
 func preview_building(world : World, id : int, input : InputComponent) -> void:
@@ -59,7 +75,6 @@ func spawn_building(world: World, id : int, input : InputComponent) -> void:
 
 	world.remove_component(id, BuildOrderComponent)
 	input.build_mode = false
-	input.confirm_order = false
 	var city_id = world.query([CityComponent]).get(0)
 	var city = world.get_component(city_id, CityComponent)
 	city.buildings.append(id)
