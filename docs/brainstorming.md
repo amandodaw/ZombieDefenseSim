@@ -17,4 +17,3 @@
     1. Que estado del mundo cambia la acción?
         - Aquí tenemos varias opciones
         - Trabajar -> enough_resources = true
-    2. 
