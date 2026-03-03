@@ -36,7 +36,6 @@ func _update_entity_perception(world, entity):
 
 	var center : Vector2i = GridUtils.world_to_tile(pos.value)
 	var r : int = vision.range
-	print("ENTITY", entity, "AT", center, "RANGE", r)
 	for x in range(center.x - r, center.x + r + 1):
 		for y in range(center.y - r, center.y + r + 1):
 
@@ -49,5 +48,3 @@ func _update_entity_perception(world, entity):
 			for other in list:
 				if other != entity:
 					vision.visible_entities.append(other)
-	print("CENTER:", center)
-	print("SPATIAL TILES:", spatial.tile_entities.keys())

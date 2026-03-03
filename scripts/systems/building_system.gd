@@ -24,10 +24,10 @@ func update(world : World, delta):
 				elif input.abort_order:
 					build_order.state = BuildOrderComponent.State.ABORTED
 
-		BuildOrderComponent.State.CONFIRMED:
-			spawn_building(world, order_id, input)
-			input.confirm_order = false
-			build_order.state = BuildOrderComponent.State.PENDING
+			BuildOrderComponent.State.CONFIRMED:
+				spawn_building(world, order_id, input)
+				input.confirm_order = false
+				build_order.state = BuildOrderComponent.State.PENDING
 
 
 func preview_building(world : World, id : int, input : InputComponent) -> void:
@@ -48,8 +48,10 @@ func preview_building(world : World, id : int, input : InputComponent) -> void:
 	_render_preview(world, base_cell, workplace_comp)
 	
 	if _check_valid_position(world, base_cell, workplace_comp):
+		preview_map.self_modulate = Color(1, 1, 1, 0.7)
 		build_order.valid_pos = true
 	else:
+		preview_map.self_modulate = Color(1, 0, 0, 0.5)
 		build_order.valid_pos = false
 		input.confirm_order = false
 
@@ -66,10 +68,6 @@ func spawn_building(world: World, id : int, input : InputComponent) -> void:
 		return
 
 	var base_cell : Vector2i = world.map_layer.local_to_map(pos.value)
-
-	if not _check_valid_position(world, base_cell, workplace_comp):
-		print("Lugar ya ocupado")
-		return
 
 	_place_building(world, base_cell, workplace_comp)
 

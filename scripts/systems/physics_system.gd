@@ -17,7 +17,7 @@ func update(world, delta):
 			dir = dir.normalized()
 		
 		if sprite==null:
-			return
+			continue
 		var sprite_velocity = dir * mov.speed
 		sprite.global_position += sprite_velocity * delta
 
