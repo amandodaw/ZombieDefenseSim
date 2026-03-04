@@ -1,6 +1,7 @@
 extends Control
 
 @onready var contenedor = $BuildMenu
+@onready var worker_menu = $WorkMenu
 @onready var world : World
 var opcion_seleccionada
 
@@ -13,7 +14,9 @@ func actualizar_menu():
 	if(world==null):
 		return
 	var input : InputComponent = world.get_component(world.player_id, InputComponent)
-
+	
+	world.connect("human_created", _on_human_created)
+	
 	# Borrar botones anteriores
 	for hijo in contenedor.get_children():
 		hijo.queue_free()
@@ -40,3 +43,51 @@ func _on_boton_presionado(opcion):
 		world.add(order, PositionComponent.new())
 		input.build_mode = true
 		input.selected_building = opcion
+
+func update_worker_menu():
+	if(world==null):
+		return
+	var city_comp : CityComponent = world.get_component(world.player_id, CityComponent)
+
+	# Borrar botones anteriores
+	for option in worker_menu.get_children():
+		option.queue_free()
+	
+	# Crear nuevos botones
+	for worker in city_comp.humans:
+		var boton = Button.new()
+		boton.text = str(worker)
+		boton.pressed.connect(_on_worker_button.bind(worker))
+		worker_menu.add_child(boton)
+
+
+func _on_worker_button(worker_id : int):
+
+	var option_button = OptionButton.new()
+	option_button.set_allow_reselect(true)
+
+	option_button.add_item("Ninguno", -1)
+
+	for workplace in world.city_comp.buildings:
+		option_button.add_item(str(workplace), workplace)
+
+	option_button.connect("item_selected", _on_item_selected.bind(option_button, worker_id))
+
+	worker_menu.add_child(option_button)
+
+func _on_item_selected(index, _option_button, worker_id):
+
+	var option_button : OptionButton = _option_button
+
+	var workplace_id = option_button.get_item_id(index)
+
+	var worker_comp : WorkerComponent = world.get_component(worker_id, WorkerComponent)
+
+	worker_comp.workplace = workplace_id
+
+	option_button.queue_free()
+
+	print("Trabajador:", worker_id, "asignado a edificio:", workplace_id)
+
+func _on_human_created(human_id : int) ->void:
+	update_worker_menu()

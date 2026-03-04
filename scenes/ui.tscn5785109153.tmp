@@ -25,9 +25,9 @@ offset_top = 3.0
 offset_right = 54.0
 offset_bottom = 84.0
 
-[node name="WorkMenu" type="VBoxContainer" parent="Control" unique_id=1754617796]
+[node name="AssignMenu" type="VBoxContainer" parent="Control" unique_id=57026136]
 layout_mode = 0
-offset_left = 77.0
-offset_top = 4.0
-offset_right = 129.0
-offset_bottom = 85.0
+offset_left = 2.0
+offset_top = 3.0
+offset_right = 54.0
+offset_bottom = 84.0

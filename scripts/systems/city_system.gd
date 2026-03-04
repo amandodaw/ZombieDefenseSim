@@ -7,4 +7,6 @@ func update(world: World, delta):
 		if city.humans.has(entity):
 			continue
 		city.humans.append(entity)
-		
+
+func add(entity_id : int, delta):
+	pass

@@ -133,6 +133,12 @@ var city_system : CitySystem
 var spatial_index_system : SpatialIndexSystem
 var perception_system : PerceptionSystem
 
+var city_comp : CityComponent
+
+# =========================
+# UI
+# =========================
+signal human_created(human_id)
 func _ready() -> void:
 	input_system = InputSystem.new()
 	building_system = BuildingSystem.new()
@@ -147,20 +153,22 @@ func _ready() -> void:
 	
 	ui.world = self
 	
+	
 	register_system(input_system)
 	register_system(building_system)
+	register_system(city_system)
 	register_system(spatial_index_system)
 	register_system(perception_system)
 	register_system(goal_system)
 	register_system(goap_system)
 	register_system(goap_execution_system)
-	register_system(city_system)
 	register_system(physics_system)
 	#register_system(ui_system)
 	
 	create_player()
 	ui.actualizar_menu()
-	add(create_entity(), CityComponent.new())
+	add(player_id, CityComponent.new())
+	city_comp = get_component(player_id, CityComponent)
 
 func _process(delta: float) -> void:
 	for system in systems:
@@ -186,6 +194,7 @@ func create_human(pos : Vector2i) -> void:
 	add(human_id, HumanComponent.new())
 	add(human_id, PerceptionComponent.new())
 	add(human_id, VisionComponent.new())
+	add(human_id, WorkerComponent.new())
 
 	var sprite_component = SpriteComponent.new()
 	add(human_id, sprite_component)
@@ -193,3 +202,6 @@ func create_human(pos : Vector2i) -> void:
 	human.global_position = pos
 	add_child(human)
 	sprite_component.sprite = human
+	
+	city_comp.humans.append(human_id)
+	emit_signal("human_created", human_id)
