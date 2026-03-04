@@ -33,3 +33,5 @@ func update(entity, world, delta):
 		workplace.work_done = 0
 		print("Trabajo finalizado en taller ", worker.workplace)
 		finish()
+		var world_state = world.get_component(entity, WorldStateComponent).state
+		world_state["enough_resources"] = false

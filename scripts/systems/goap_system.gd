@@ -25,6 +25,8 @@ func update(world: World, delta):
 			if goals[key]:
 				has_active_goal = true
 				break
+		if has_active_goal:
+			continue
 		# planificar para el primer goal activo
 		for goal_key in goals.keys():
 			if not goals[goal_key]:

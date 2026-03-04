@@ -89,8 +89,10 @@ func _on_item_selected(index, _option_button, worker_id):
 	var workplace_id = option_button.get_item_id(index)
 
 	var worker_comp : WorkerComponent = world.get_component(worker_id, WorkerComponent)
-
+	
 	worker_comp.workplace = workplace_id
+	if workplace_id==-1:
+		world.goal_system.invalidate_plan(worker_id, world)
 
 	option_button.queue_free()
 
