@@ -91,6 +91,7 @@ func _get_or_create_workplace_component(world: World, entity_id: int, building_t
 	world.add(entity_id, type_comp)
 	workplace_comp.form = type_comp.form
 	workplace_comp.origin_tile = type_comp.origin_tile
+	workplace_comp.name = type_comp.name
 	world.add(entity_id, workplace_comp)
 	return workplace_comp
 

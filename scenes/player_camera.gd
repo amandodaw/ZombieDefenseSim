@@ -6,6 +6,9 @@ extends Camera2D
 var scroll_speed := 500.0
 var border_margin := 20.0
 
+func _ready() -> void:
+	position = get_viewport_rect().size/2
+
 func _process(delta):
 	move_camera(delta)
 

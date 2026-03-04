@@ -66,10 +66,17 @@ func _on_worker_button(worker_id : int):
 	var option_button = OptionButton.new()
 	option_button.set_allow_reselect(true)
 
-	option_button.add_item("Ninguno", -1)
+	option_button.add_item("Ninguno")
+	option_button.set_item_id(0, -1)
 
 	for workplace in world.city_comp.buildings:
-		option_button.add_item(str(workplace), workplace)
+
+		var wp_comp : WorkplaceComponent = world.get_component(workplace, WorkplaceComponent)
+
+		option_button.add_item(wp_comp.name + " " + str(workplace))
+
+		var index = option_button.item_count - 1
+		option_button.set_item_id(index, workplace) # ← el entity_id real
 
 	option_button.connect("item_selected", _on_item_selected.bind(option_button, worker_id))
 

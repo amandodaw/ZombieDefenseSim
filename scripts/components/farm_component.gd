@@ -1,5 +1,7 @@
 class_name FarmComponent
 
+var name : String = "Farm"
+
 var origin_tile : Vector2i = Vector2i(0,1)
 
 var form : Array[Vector2i] = [

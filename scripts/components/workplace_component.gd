@@ -1,5 +1,7 @@
 class_name WorkplaceComponent
 
+var name : String
+
 var origin_tile : Vector2i
 
 var form : Array[Vector2i]

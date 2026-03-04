@@ -1,5 +1,7 @@
 class_name HouseComponent
 
+var name : String = "House"
+
 var origin_tile : Vector2i = Vector2i(0,4)
 
 var form : Array[Vector2i] = [

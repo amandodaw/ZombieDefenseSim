@@ -11,6 +11,8 @@ func update(world: World, delta):
 		var goal_component = world.get_component(entity, GoalComponent)
 		var world_state = world.get_component(entity, WorldStateComponent)
 		var plan_component = world.get_component(entity, PlanComponent)
+		var worker_comp : WorkerComponent = world.get_component(entity, WorkerComponent)
+		var move : MovementComponent = world.get_component(entity, MovementComponent)
 
 		if not plan_component.plan.is_empty():
 			continue
@@ -20,7 +22,12 @@ func update(world: World, delta):
 			goal_component.goals[key] = false
 
 		var state = world_state.state
-
+		# Si tiene trabajo asignado, trabajar
+		if worker_comp.workplace !=-1:
+			var workplace_pos = world.get_component(worker_comp.workplace, PositionComponent)
+			move.target = workplace_pos.value
+			goal_component.goals["has_target"] = true
+			
 		# Si tiene target pero no ha llegado → querer estar en el target
 		if state.get("has_target", false) and not state.get("at_target", false):
 			goal_component.goals["at_target"] = true
