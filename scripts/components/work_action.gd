@@ -18,4 +18,18 @@ func start(entity, world):
 	super.start(entity, world)
 
 func update(entity, world, delta):
-	pass
+
+	var worker : WorkerComponent = world.get_component(entity, WorkerComponent)
+
+	if worker.workplace == -1:
+		finish()
+		return
+
+	var workplace : WorkplaceComponent = world.get_component(worker.workplace, WorkplaceComponent)
+
+	workplace.work_done += delta * 10
+	print("Trabajado: ", workplace.work_done)
+	if workplace.work_done >= workplace.work_needed:
+		workplace.work_done = 0
+		print("Trabajo finalizado en taller ", worker.workplace)
+		finish()

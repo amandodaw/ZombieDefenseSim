@@ -22,11 +22,19 @@ func update(world: World, delta):
 			goal_component.goals[key] = false
 
 		var state = world_state.state
+		# limpiar estado si no tiene workplace
+		if worker_comp.workplace == -1:
+			state["has_target"] = false
+			state["at_target"] = false
+			continue
 		# Si tiene trabajo asignado, trabajar
 		if worker_comp.workplace !=-1:
 			var workplace_pos = world.get_component(worker_comp.workplace, PositionComponent)
 			move.target = workplace_pos.value
-			goal_component.goals["has_target"] = true
+			state["has_target"] = true
+			state["at_target"] = false
+			goal_component.goals["enough_resources"] = true
+			continue
 			
 		# Si tiene target pero no ha llegado → querer estar en el target
 		if state.get("has_target", false) and not state.get("at_target", false):

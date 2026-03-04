@@ -2,7 +2,8 @@ class_name ActionComponent
 
 var action_types = [
 	GoToAction,
-	WanderAction
+	WanderAction,
+	WorkAction
 ]
 
 func get_actions() -> Array[GoapAction]:
