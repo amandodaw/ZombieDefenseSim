@@ -11,9 +11,7 @@ func _init():
 		"has_target": true
 	}
 	effects = {
-		"has_target": false,
 		"at_target": true
-
 	}
 
 
@@ -22,7 +20,8 @@ func update(entity, world, delta):
 	var pos = world.get_component(entity, PositionComponent)
 	var goals = world.get_component(entity, GoalComponent).goals
 	var move : MovementComponent = world.get_component(entity, MovementComponent)
-	target_position = move.target
+	var world_state : WorldStateComponent = world.get_component(entity, WorldStateComponent)
+	target_position = world_state.target_pos
 	
 	var direction : Vector2 = (target_position - pos.value)
 	

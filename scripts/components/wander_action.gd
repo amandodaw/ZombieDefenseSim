@@ -8,11 +8,10 @@ func _init():
 	name = "Wander action"
 	
 	preconditions = {
-		"has_target": false
+		"task_assigned": false
 	}
 	effects = {
-		"has_target": true,
-		"at_target": false
+		"task_assigned": true
 	}
 
 func start(entity, world):
@@ -21,6 +20,7 @@ func start(entity, world):
 	var pos = world.get_component(entity, PositionComponent)
 	var move = world.get_component(entity, MovementComponent)
 	var goal_component = world.get_component(entity, GoalComponent)
+	var world_state = world.get_component(entity, WorldStateComponent)
 	
 	var random_offset = Vector2i(
 		randf_range(-100, 100),
@@ -29,6 +29,5 @@ func start(entity, world):
 	
 	var new_target = pos.value + random_offset
 	
-	move.target = new_target
-	
+	world_state.target_pos = new_target
 	finish()

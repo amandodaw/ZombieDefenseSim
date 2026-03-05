@@ -23,7 +23,7 @@ func update(world: World, delta):
 		var has_active_goal := false
 		for key in goals.keys():
 			if goals[key]:
-				has_active_goal = true
+				has_active_goal = false
 				break
 		if has_active_goal:
 			continue
