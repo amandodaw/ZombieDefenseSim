@@ -114,8 +114,11 @@ func _on_item_selected(index : int, option_button : OptionButton, worker_id : in
 	var workplace_id = option_button.get_item_id(index)
 
 	var worker_comp : WorkerComponent = world.get_component(worker_id, WorkerComponent)
+	
+	var world_state : WorldStateComponent = world.get_component(worker_id, WorldStateComponent)
 
 	worker_comp.workplace = workplace_id
+	world_state.state["state_dirty"] = true
 
 	if workplace_id == -1:
 		world.goal_system.invalidate_plan(worker_id, world)

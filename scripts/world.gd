@@ -129,6 +129,7 @@ var ui_system : UISystem
 var physics_system : PhysicsSystem
 var goal_system : GoalSystem
 var goap_system : GoapSystem
+var replan_system : ReplanSystem
 var goap_execution_system : GoapExecutionSystem
 var city_system : CitySystem
 var spatial_index_system : SpatialIndexSystem
@@ -148,6 +149,7 @@ func _ready() -> void:
 	physics_system = PhysicsSystem.new()
 	goal_system = GoalSystem.new()
 	goap_system = GoapSystem.new()
+	replan_system = ReplanSystem.new()
 	goap_execution_system = GoapExecutionSystem.new()
 	city_system = CitySystem.new()
 	spatial_index_system = SpatialIndexSystem.new()
@@ -163,6 +165,7 @@ func _ready() -> void:
 	register_system(perception_system)
 	register_system(goal_system)
 	register_system(goap_system)
+	register_system(replan_system)
 	register_system(goap_execution_system)
 	register_system(physics_system)
 	#register_system(ui_system)
