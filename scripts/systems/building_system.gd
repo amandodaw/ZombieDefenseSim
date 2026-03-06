@@ -76,7 +76,7 @@ func spawn_building(world: World, id : int, input : InputComponent) -> void:
 	var city_id = world.query([CityComponent]).get(0)
 	var city = world.get_component(city_id, CityComponent)
 	city.buildings.append(id)
-
+	world.emit_signal("building_created", id)
 
 func _get_or_create_workplace_component(world: World, entity_id: int, building_type: int) -> WorkplaceComponent:
 	var workplace_comp = WorkplaceComponent.new()
@@ -116,12 +116,3 @@ func _place_building(world: World, base_cell: Vector2i, workplace_comp: Workplac
 		var target_cell = base_cell + offset
 		var atlas_coords = workplace_comp.origin_tile + offset
 		world.building_map.set_cell(target_cell, 0, atlas_coords)
-
-
-
-func spawn_farm():
-	pass
-
-
-func spawn_kitchen():
-	pass

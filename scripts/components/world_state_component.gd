@@ -6,5 +6,5 @@ var state : Dictionary = {
 	"has_target" : false,
 	"at_target" : false,
 	"enough_resources" : false,
-	"task_assigned" : false
+	"wander" : false
 }

@@ -91,6 +91,7 @@ func query(required_types: Array) -> Array:
 	_query_cache[cache_key] = result
 	return result
 
+# Este no se usa aun
 func _query_optimizado(required_types: Array) -> Array:
 	var base_type = _get_smallest_component_type(required_types)
 	if not components.has(base_type):
@@ -139,6 +140,7 @@ var city_comp : CityComponent
 # UI
 # =========================
 signal human_created(human_id)
+signal building_created(building_id)
 func _ready() -> void:
 	input_system = InputSystem.new()
 	building_system = BuildingSystem.new()

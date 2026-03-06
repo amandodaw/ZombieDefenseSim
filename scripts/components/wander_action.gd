@@ -8,10 +8,10 @@ func _init():
 	name = "Wander action"
 	
 	preconditions = {
-		"task_assigned": false
+		"wander": false
 	}
 	effects = {
-		"task_assigned": true
+		"wander": true
 	}
 
 func start(entity, world):

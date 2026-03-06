@@ -1,6 +1,6 @@
 class_name GoalComponent
 
 var goals = {
-	"no_task" : false,
+	"wander" : false,
 	"enough_resources": false
 }
