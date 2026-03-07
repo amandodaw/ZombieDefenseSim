@@ -58,6 +58,9 @@ func has_component(entity: int, type) -> bool:
 	return components.has(type) and components[type].has(entity)
 
 func remove_component(entity: int, type) -> void:
+	if type == PositionComponent and spatial_index_system != null and spatial_index_system.has_method("remove_entity"):
+		spatial_index_system.remove_entity(entity)
+	
 	if components.has(type):
 		components[type].erase(entity)
 	
@@ -67,6 +70,10 @@ func remove_component(entity: int, type) -> void:
 	_invalidate_cache()
 
 func destroy_entity(entity: int) -> void:
+	# Keep spatial index consistent to avoid stale entries.
+	if spatial_index_system != null and spatial_index_system.has_method("remove_entity"):
+		spatial_index_system.remove_entity(entity)
+
 	for type in components.keys():
 		components[type].erase(entity)
 	
@@ -183,7 +190,7 @@ func create_player() -> void :
 	player_id = create_entity()
 	add(player_id, InputComponent.new())
 
-func create_human(pos : Vector2i) -> void:
+func create_human(pos : Vector2) -> void:
 	var human_id = create_entity()
 	var position = PositionComponent.new()
 	position.value = pos

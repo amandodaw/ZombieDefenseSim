@@ -1,3 +1,3 @@
 class_name PositionComponent
 
-var value : Vector2i = Vector2i.ZERO
+var value : Vector2 = Vector2.ZERO

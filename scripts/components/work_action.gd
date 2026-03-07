@@ -1,7 +1,7 @@
 class_name WorkAction
 extends GoapAction
 
-var target_position : Vector2i
+var target_position : Vector2
 
 
 func _init():

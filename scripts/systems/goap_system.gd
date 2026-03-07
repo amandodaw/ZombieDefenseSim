@@ -19,13 +19,13 @@ func update(world: World, delta):
 		if not plan.is_empty():
 			continue
 		
-		# Solo evaluar goals si no hay ningún goal activo
+		# No planificar si no hay goals activos
 		var has_active_goal := false
 		for key in goals.keys():
 			if goals[key]:
-				has_active_goal = false
+				has_active_goal = true
 				break
-		if has_active_goal:
+		if not has_active_goal:
 			continue
 		# planificar para el primer goal activo
 		for goal_key in goals.keys():
